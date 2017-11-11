@@ -1,0 +1,18 @@
+<html>
+<body onload="myFunction()">
+  <script>
+  function myFunction() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      var json = JSON.parse(this.responseText);
+      console.log(json[0].price_usd);
+
+      // document.getElementById('output').innerHTML = json;
+    };
+    xhttp.open("GET", "http://localhost:3000/watch", true);
+    xhttp.send();
+  }
+  </script>
+  <p xclass="output"></p>
+</body>
+</html>
