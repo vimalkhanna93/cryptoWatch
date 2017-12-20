@@ -1,18 +1,30 @@
 <html>
-<body onload="myFunction()">
-  <script>
-  function myFunction() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      var json = JSON.parse(this.responseText);
-      console.log(json[0].price_usd);
-
-      // document.getElementById('output').innerHTML = json;
-    };
-    xhttp.open("GET", "http://localhost:3000/watch", true);
-    xhttp.send();
-  }
-  </script>
-  <p xclass="output"></p>
-</body>
+  <head>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+  </head>
+  <body>
+    <div id="vueApp">
+      <ul>
+        <li v-for="coin in json">{{ coin.name + "=" + coin.price_usd }}</li>
+      </ul>
+      <a href="#" class="btn btn-success" v-on:click="loadUsers">Load Users</a>
+    </div>
+    <script>
+      new Vue({
+        el: '#vueApp',
+        data: {
+          json: '',
+        },
+        methods: {
+          loadUsers: function() {
+            this.$http.get('http://localhost:3000/watch').then(res => {
+              this.json = res.body;
+              console.log(this.json);
+            });
+          }
+        }
+      });
+    </script>
+  </body>
 </html>
