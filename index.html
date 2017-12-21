@@ -5,22 +5,25 @@
   </head>
   <body>
     <div id="vueApp">
-      <ul>
-        <li v-for="coin in json">{{ coin.name + "=" + coin.price_usd }}</li>
-      </ul>
-      <a href="#" class="btn btn-success" v-on:click="loadUsers">Load Users</a>
+      <input v-model="coinName">
+      <button @click="getCoin()">Submit</button>
+      <p>{{ coinDetails }}</p>
     </div>
     <script>
       new Vue({
         el: '#vueApp',
         data: {
-          json: '',
+          coinDetails: '',
+          coinName: ''
         },
         methods: {
-          loadUsers: function() {
-            this.$http.get('http://localhost:3000/watch').then(res => {
-              this.json = res.body;
-              console.log(this.json);
+          getCoin: function() {
+            this.coinName = this.coinName.toLowerCase();
+            url = "http://localhost:3000/watch" + '?' + 'coin=' + this.coinName;
+            console.log(url);
+            this.$http.get(url).then(res => {
+              this.coinDetails = res.body;
+              console.log(this.coinDetails);
             });
           }
         }
