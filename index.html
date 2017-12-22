@@ -2,27 +2,29 @@
   <head>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans:400' rel='stylesheet' type='text/css'>
   </head>
   <body>
     <div id="vueApp">
       <input v-model="coinName">
       <button @click="getCoin()">Submit</button>
-      <!-- <p>{{ coinDetails }}</p> -->
       <!-- <ul>18445698816</ul> -->
-      <!-- <ul> -->
-        <!-- <li>{{ "Name : " + coinDetails.name }}</li>
-        <li>{{ "Rank : " + coinDetails.rank }}</li>
-        <li>{{ "Price : " + coinDetails.price_usd }}</li>
-        <li>{{ "Percent Change Last 1 hour : " + coinDetails.percent_change_1h }}</li>
-        <li>{{ "Percent Change Last 24 hours : " + coinDetails.percent_change_24h }}</li>
-        <li>{{ "Percent Change Last 7 days : " + coinDetails.percent_change_7d }}</li> -->
-        <p>Name: {{coinDetails.name}}</p>
-        <p>Rank : {{coinDetails.rank}}</p>
-        <p>Price : {{coinDetails.price_usd}}</p>
-        <p>Percent Change Last 1 hour : {{coinDetails.percent_change_1h}} %</p>
-        <p>Percent Change Last 24 hours : {{coinDetails.percent_change_24h}} %</p>
-        <p>Percent Change Last 7 days : {{coinDetails.percent_change_7d}} %</p>
-      <!-- </ul> -->
+      <div class="wrapper">
+        <h2 class="coin-name">{{coinDetails.name}}</h2>
+        <div class="box">
+          <h3 class="value">$ {{coinDetails.price_usd}}</h3>
+          <p class="label">Price</p>
+          <h3 class="value">{{coinDetails.rank}}</h3>
+          <p class="label">Rank by MarketCap</p>
+          <h3 class="value">{{coinDetails.percent_change_1h}} %</h3>
+          <p class="label">Change in Last 1 Hour</p>
+          <h3 class="value">{{coinDetails.percent_change_24h}} %</h3>
+          <p class="label">Change in Last 24 Hour</p>
+          <h3 class="value">{{coinDetails.percent_change_7d}} %</h3>
+          <p class="label">Change in Last 7 days</p>
+        </div>
+      </div>
     </div>
     <script>
       new Vue({

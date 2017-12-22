@@ -1,0 +1,32 @@
+body {
+  /*background-color: #000000;*/
+  /*color: #ffffff;*/
+  font-family: 'Work Sans', sans-serif;
+}
+
+.box {
+  width: 20rem;
+  height: 20rem;
+  border: 2px solid tomato;
+}
+
+.coin-name {
+  text-align: center;
+}
+
+.wrapper {
+  width: 20rem;
+  height: 24rem;
+}
+
+.value, .label {
+  text-align: center;
+}
+
+.label {
+  margin: 0rem;
+}
+
+.value {
+  margin-bottom: 0rem;
+}
