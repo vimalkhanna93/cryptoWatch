@@ -4,7 +4,6 @@ const request = require('request');
 
 app.get('/watch', function (req, res) {
   var coinName = req.query.coin;
-  // console.log(coinName);
   var RequestURL='https://api.coinmarketcap.com/v1/ticker/';
   request(RequestURL, function (error, response, body) {
     if (!error) {

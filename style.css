@@ -1,32 +1,81 @@
 body {
-  /*background-color: #000000;*/
-  /*color: #ffffff;*/
   font-family: 'Work Sans', sans-serif;
+  color: #646E78;
+}
+
+hr {
+  height: 0.1rem;
+  background-color: tomato;
+  border: none;
+}
+
+input {
+  outline: none;
+  box-shadow: none;
+  border: 0.125rem solid lightgrey;
+  width: 45rem;
+  height: 3rem;
+  font-size: 1rem;
+  color: #646E78;
+  cursor: text;
+  border: 0.125rem solid #D4D8DC;
+  border-radius: 0.5rem;
+  padding: 0.75rem 2rem 0.75rem 1rem;
+  margin-top: 1.5rem;
+  box-sizing: border-box;
+}
+
+button {
+  border-radius: 0.5rem;
+  outline: none;
+  box-shadow: none;
+  border: 0.125rem solid tomato;
+  height: 3rem;
+  font-size: 1rem;
+  background-color: tomato;
+  color: #FFFFFF;
+  cursor: pointer;
+  padding: 0 1rem;
+  width: 12rem;
+}
+
+.coin-input {
+  align-content: center;
 }
 
 .box {
   width: 20rem;
-  height: 20rem;
+  height: 25rem;
+  border-radius: 0.5rem;
   border: 2px solid tomato;
-}
-
-.coin-name {
+  box-sizing: border-box;
   text-align: center;
 }
 
-.wrapper {
-  width: 20rem;
-  height: 24rem;
+.coin {
+  list-style: none;
+  margin: 2rem;
+  float: left;
 }
 
-.value, .label {
-  text-align: center;
-}
-
-.label {
-  margin: 0rem;
+.name {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .value {
+  font-size: 1.25rem;
   margin-bottom: 0rem;
+  font-weight: 500;
+}
+
+.label {
+  font-family: 'Work Sans', sans-serif;
+  margin: 0 1rem;
+  color: grey;
+  font-size: 1rem;
+}
+
+.coin-wrapper {
+  text-align: center;
 }
