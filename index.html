@@ -3,7 +3,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
   <link rel="stylesheet" href="style.css">
   <div id="coin-wrapper" class="coin-wrapper">
-    <input class="coin-input" type="text" v-model="coinName">
+    <input class="coin-input" type="text" v-model="coinName" @keydown.enter="add()">
     <button class="submit" @click="add()">Submit</button>
     <ul id="coinList">
       <li class="coin" v-for="coin in coins">
