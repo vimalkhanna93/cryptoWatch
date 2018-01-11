@@ -40,21 +40,30 @@
         },
         methods: {
           sendToServer: function() {
-            if(this.validateEmail() && this.confirmPassword()) {
-              var payload = {};
-              payload.email = this.emailRegister;
-              payload.password = this.passwordRegister;
-              url = 'http://localhost:3000/register/';
-              this.$http.post(url,payload).then(res => {
-                // if(res != "ok")
-                  // console.log(res.body);
-              });
+            if(this.validateEmail() && this.validatePassword()) {
+              if(this.confirmPassword()) {
+                var payload = {};
+                payload.email = this.emailRegister;
+                payload.password = this.passwordRegister;
+                url = 'http://localhost:3000/register/';
+                this.$http.post(url,payload).then(res => {
+                  console.log(res.body);
+                });
+              }
+              else {
+                console.log("Password does not match");
+              }
             }
-            else 
+            else {
               console.log("Email or Password is wrong");
+            }
           },
           validateEmail: function() {
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.emailRegister)) return (true);
+            return (false);
+          },
+          validatePassword: function() {
+            if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(this.passwordRegister)) return (true);
             return (false);
           },
           confirmPassword: function() {

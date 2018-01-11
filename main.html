@@ -10,15 +10,15 @@
         <div class="box">
           <p class="name">{{coin.name}}</p>
           <hr>
-          <p class="value">{{coin.price}}</p>
+          <p class="value">${{coin.price}}</p>
           <p class="label">price</p>
-          <p class="value">{{ coin.rank }}</p>
+          <p class="value">#{{coin.rank}}</p>
           <p class="label">Rank by MarketCap</p>
-          <p class="value"> {{ coin.change1h }}</p>
+          <p class="value"> {{coin.change1h}}%</p>
           <p class="label">Last 1 hour</p>
-          <p class="value"> {{ coin.change24h }}</p>
+          <p class="value">{{coin.change24h}}%</p>
           <p class="label">Last 24 hours</p>
-          <p class="value">{{ coin.change7d }}</p>
+          <p class="value">{{coin.change7d}}%</p>
           <p class="label">Last 7 days</p>
         </div>
       </li>
@@ -39,11 +39,11 @@
           var temp = {};
           temp.id = res.body.id;
           temp.name = res.body.name;
-          temp.price = '$' + res.body.price_usd;
-          temp.rank = '#' + res.body.rank;
-          temp.change1h = res.body.percent_change_1h + '%';
-          temp.change7d = res.body.percent_change_7d + '%';
-          temp.change24h = res.body.percent_change_24h + '%';
+          temp.price = res.body.price_usd;
+          temp.rank = res.body.rank;
+          temp.change1h = res.body.percent_change_1h;
+          temp.change7d = res.body.percent_change_7d;
+          temp.change24h = res.body.percent_change_24h;
           this.coins.push(temp);
         });
       }
