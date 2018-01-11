@@ -35,7 +35,7 @@ app.post('/register', function (req, res) {
   var user = req.body;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
     db.collection("users").insertOne(user, function(err, res) {
-      if (err) throw err;
+      if (err) res.send(err);
       db.close();
     });
   });
