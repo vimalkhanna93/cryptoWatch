@@ -1,53 +1,57 @@
 <html>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
-  <link rel="stylesheet" href="style.css">
-  <div id="coin-wrapper" class="coin-wrapper">
-    <input class="coin-input" type="text" v-model="coinName" @keydown.enter="add()">
-    <button class="submit" @click="add()">Submit</button>
-    <ul id="coinList">
-      <li class="coin" v-for="coin in coins">
-        <div class="box">
-          <p class="name">{{coin.name}}</p>
-          <hr>
-          <p class="value">{{coin.price}}</p>
-          <p class="label">price</p>
-          <p class="value">{{ coin.rank }}</p>
-          <p class="label">Rank by MarketCap</p>
-          <p class="value"> {{ coin.change1h }}</p>
-          <p class="label">Last 1 hour</p>
-          <p class="value"> {{ coin.change24h }}</p>
-          <p class="label">Last 24 hours</p>
-          <p class="value">{{ coin.change7d }}</p>
-          <p class="label">Last 7 days</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <script>
-    new Vue({
-      el: '#coin-wrapper',
-      data: {
-        coinName: '',
-        coins: []
-      },
-      methods: {
-        add: function() {
-          this.coinName = this.coinName.toLowerCase();
-          url = "http://localhost:3000/watch" + '?' + 'coin=' + this.coinName;
-          this.$http.get(url).then(res => {
-            var temp = {};
-            temp.id = res.body.id;
-            temp.name = res.body.name;
-            temp.price = '$' + res.body.price_usd;
-            temp.rank = '#' + res.body.rank;
-            temp.change1h = res.body.percent_change_1h + '%';
-            temp.change7d = res.body.percent_change_7d + '%';
-            temp.change24h = res.body.percent_change_24h + '%';
-            this.coins.push(temp);
-          });
+  <head>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+  <body>
+    <div class="wrapper">
+      <h2>Crypto Watch</h2>
+      <div class="menu">
+        <a class="option" href="">Login</a>
+        <a class="option" href="">Register</a>
+      </div>
+      <div class="login">
+        <input class="login-inputbox" id="email" type="text" placeholder="Email">
+        <br>
+        <input class="login-inputbox" id="password" type="password" placeholder="Password">
+        <br>
+        <button id="submit-login" class="login-submit">Submit</button>
+      </div>
+      <div class="register">
+        <input class="login-inputbox" id="email-register" type="text" placeholder="Email" v-model="emailRegister">
+        <br>
+        <input class="login-inputbox" id="password-register" type="password" placeholder="Password" v-model="passwordRegister">
+        <br>
+        <input class="login-inputbox" id="password-confirmation-register" type="password" placeholder="Confirm Password" v-model="confirmPasswordRegister">
+        <br />
+        <button class="login-submit" @click="sendToServer()">Submit</button>
+      </div>
+    </div>
+    <script>
+      new Vue({
+        el: ".wrapper",
+        data: {
+          emailRegister: '',
+          passwordRegister: '',
+          confirmPasswordRegister: ''
+        },
+        methods: {
+          sendToServer: function() {
+            var payload = {};
+            payload.email = this.emailRegister;
+            payload.password = this.passwordRegister;
+            url = 'http://localhost:3000/register/';
+            console.log(url);
+            console.log(payload);
+            this.$http.post(url,payload).then(response => {
+              console.log(response);
+            });
+          }
         }
-      }
-    })
-  </script>
+      })
+    </script>
+  </body>
 </html>

@@ -13,7 +13,7 @@ input {
   outline: none;
   box-shadow: none;
   border: 0.125rem solid lightgrey;
-  width: 45rem;
+  width: 24rem;
   height: 3rem;
   font-size: 1rem;
   color: #646E78;
@@ -36,7 +36,7 @@ button {
   color: #FFFFFF;
   cursor: pointer;
   padding: 0 1rem;
-  width: 12rem;
+  width: 8rem;
 }
 
 .coin-input {
@@ -78,4 +78,38 @@ button {
 
 .coin-wrapper {
   text-align: center;
+}
+
+.login-submit {
+  margin-top: 2rem;
+  width: 24rem;
+}
+
+.login-inputbox {
+  width: 24rem;
+}
+
+.wrapper {
+  text-align: center;
+  width: 25rem;
+}
+
+.menu {
+  height: 1.8rem;
+  border-bottom: 0.125rem solid #F4F6F8;
+  margin: 0rem;
+  text-align: center;
+}
+
+.option {
+  text-decoration: none;
+  color: #96A2AE;
+  border-bottom: 0.125rem solid #F4F6F8;
+  padding-bottom: 0.625rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.login {
+  display: none;
 }
