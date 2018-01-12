@@ -16,6 +16,28 @@ MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) 
   db.close();
 });
 
+app.post('/register', function (req,res) {
+  var user = req.body;
+  MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
+    db.collection("users").insertOne(user, function(err, res) {
+      if (err) res.send(err);
+      db.close();
+    });
+  });
+});
+
+app.post('/login', function(req,res) {
+  MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
+    db.collection("users").findOne({"email": req.body.email }, function(err, result) {
+      if(req.body.password == result.password) {
+        res.send("ok");
+      }
+      else res.send("not");
+      db.close();
+    });
+  });
+})
+
 app.get('/watch', function (req, res) {
   var coinName = req.query.coin;
   var RequestURL='https://api.coinmarketcap.com/v1/ticker/';
@@ -29,16 +51,6 @@ app.get('/watch', function (req, res) {
       }
     }
   })
-});
-
-app.post('/register', function (req, res) {
-  var user = req.body;
-  MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection("users").insertOne(user, function(err, res) {
-      if (err) res.send(err);
-      db.close();
-    });
-  });
 });
 
 app.listen(3000);

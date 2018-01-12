@@ -10,43 +10,45 @@
     <div class="wrapper">
       <h2>Crypto Watch</h2>
       <div class="menu">
-        <a class="option" href="">Login</a>
-        <a class="option" href="">Register</a>
+        <a class="option" :class="{click:enable}" @click="makeSignInVisible()">Login</a>
+        <a class="option" :class="{click:!enable}" @click="makeRegisterVisible()">Register</a>
       </div>
-      <div class="login">
-        <input class="login-inputbox" id="email" type="text" placeholder="Email">
+      <div class="login" :class="{hide:!enable}">
+        <input class="login-inputbox" id="email" type="text" placeholder="Email" v-model="loginEmail">
         <br>
-        <input class="login-inputbox" id="password" type="password" placeholder="Password">
+        <input class="login-inputbox" id="password" type="password" placeholder="Password" v-model="loginPassword">
         <br>
-        <button id="submit-login" class="login-submit">Submit</button>
+        <button id="submit-login" class="login-submit" @click="login()">Submit</button>
       </div>
-      <div class="register">
-        <input class="login-inputbox" id="email-register" type="text" placeholder="Email" v-model="emailRegister">
+      <div class="register" :class="{hide:enable}">
+        <input class="login-inputbox" id="email-register" type="text" placeholder="Email" v-model="registerEmail">
         <br>
-        <input class="login-inputbox" id="password-register" type="password" placeholder="Password" v-model="passwordRegister">
+        <input class="login-inputbox" id="password-register" type="password" placeholder="Password" v-model="registerPassword">
         <br>
-        <input class="login-inputbox" id="password-confirmation-register" type="password" placeholder="Confirm Password" v-model="confirmPasswordRegister">
+        <input class="login-inputbox" id="password-confirmation-register" type="password" placeholder="Confirm Password" v-model="registerConfirmPassword">
         <br />
-        <button class="login-submit" @click="sendToServer()">Submit</button>
+        <button class="login-submit" @click="register()">Submit</button>
       </div>
     </div>
     <script>
       new Vue({
         el: ".wrapper",
         data: {
-          emailRegister: '',
-          passwordRegister: '',
-          confirmPasswordRegister: ''
+          enable: true,
+          loginEmail: '',
+          loginPassword: '',
+          registerEmail: '',
+          registerPassword: '',
+          registerConfirmPassword: ''
         },
         methods: {
-          sendToServer: function() {
+          register: function() {
             if(this.validateEmail() && this.validatePassword()) {
               if(this.confirmPassword()) {
                 var payload = {};
-                payload.email = this.emailRegister;
-                payload.password = this.passwordRegister;
-                url = 'http://localhost:3000/register/';
-                this.$http.post(url,payload).then(res => {
+                payload.email = this.registerEmail;
+                payload.password = this.registerPassword;
+                this.$http.post('http://localhost:3000/register/',payload).then(res => {
                   console.log(res.body);
                 });
               }
@@ -58,17 +60,37 @@
               console.log("Email or Password is wrong");
             }
           },
+          login: function() {
+            var payload = {};
+            payload.email = this.loginEmail;
+            payload.password = this.loginPassword;
+            this.$http.post('http://localhost:3000/login/',payload).then(res => {
+              console.log(res.body);
+            });
+          },
           validateEmail: function() {
-            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.emailRegister)) return (true);
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.registerEmail)) return (true);
             return (false);
           },
           validatePassword: function() {
-            if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(this.passwordRegister)) return (true);
+            if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(this.registerPassword)) return (true);
             return (false);
           },
           confirmPassword: function() {
-            if(this.passwordRegister == this.confirmPasswordRegister) return true;
+            if(this.registerPassword == this.registerConfirmPassword) return true;
             return false;
+          },
+          makeSignInVisible: function() {
+            this.enable = true;
+            // if(this.enable == false) {
+            //   this.enable = true;
+            // }
+          },
+          makeRegisterVisible: function() {
+            // if(this.enable == true) {
+            //   this.enable = false;
+            // }
+            this.enable = false;
           }
         }
       })
