@@ -8,27 +8,29 @@ var MongoClient = require('mongodb').MongoClient;
 
 MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
   if (err) throw err;
-  // console.log("Database created!");
-  db.createCollection("users", function(err, res) {
-    if (err) throw err;
-    // console.log("Collection created!");
-  });
+  db.createCollection("users");
+  db.collection("users").createIndex({ "email" :1},{ unique: true } )
   db.close();
 });
 
 app.post('/register', function (req,res) {
   var user = req.body;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection("users").insertOne(user, function(err, res) {
-      if (err) res.send(err);
-      db.close();
+    db.collection("users").findOne({"email" : user.email }, function(err, result) {
+      if(result == null) {
+        db.collection("users").insertOne(user, function(err, res) {
+          db.close();
+        });
+      }
+      else res.send("exist");
     });
   });
 });
 
 app.post('/login', function(req,res) {
+  var user = req.body;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection("users").findOne({"email": req.body.email }, function(err, result) {
+    db.collection("users").findOne({"email": user.email }, function(err, result) {
       if(req.body.password == result.password) {
         res.send("ok");
       }
