@@ -2,9 +2,18 @@
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
   <link rel="stylesheet" href="style.css">
+  <div class="header">
+    <span class="title">Crypto Watch</span>
+    <span class="tabs">
+      <span class="tab">Logout</span>
+      <span class="tab">Math</span>
+      <span class="tab">Cards</span>
+    </span>
+  </div>
   <div id="coin-wrapper" class="coin-wrapper">
-    <input class="coin-input" type="text" v-model="coinName" @keydown.enter="add()">
-    <button class="submit" @click="add()">Submit</button>
+    <input class="coin-input" type="text" placeholder="Coin Name" v-model="coinName" @keydown.enter="add()">
+    <button class="submit" @click="add()">+</button>
+    <button class="submit" @click="remove()">-</button>
     <ul id="coinList">
       <li class="coin" v-for="coin in coins">
         <div class="box">
@@ -34,20 +43,26 @@
     methods: {
       add: function() {
         this.coinName = this.coinName.toLowerCase();
-        url = "http://localhost:3000/watch" + '?' + 'coin=' + this.coinName;
+        url = "http://localhost:3000/add" + '?' + 'coin=' + this.coinName;
         this.$http.get(url).then(res => {
-          var temp = {};
-          temp.id = res.body.id;
-          temp.name = res.body.name;
-          temp.price = res.body.price_usd;
-          temp.rank = res.body.rank;
-          temp.change1h = res.body.percent_change_1h;
-          temp.change7d = res.body.percent_change_7d;
-          temp.change24h = res.body.percent_change_24h;
-          this.coins.push(temp);
+          var coin = {};
+          coin.id = res.body.id;
+          coin.name = res.body.name;
+          coin.price = res.body.price_usd;
+          coin.rank = res.body.rank;
+          coin.change1h = res.body.percent_change_1h;
+          coin.change7d = res.body.percent_change_7d;
+          coin.change24h = res.body.percent_change_24h;
+          this.coins.push(coin);
+        });
+      },
+      remove: function() {
+        url = "http://localhost:3000/remove" + '?' + 'coin=' + this.coinName;
+        this.$http.get(url).then(res => {
+          this.coins.pop(this.coinName);
         });
       }
     }
-  })
+  });
 </script>
 </html>

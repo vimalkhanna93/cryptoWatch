@@ -1,6 +1,7 @@
 body {
   font-family: 'Work Sans', sans-serif;
   color: #646E78;
+  margin: 0rem;
 }
 
 hr {
@@ -28,7 +29,6 @@ input {
 button {
   border-radius: 0.5rem;
   outline: none;
-  box-shadow: none;
   border: 0.125rem solid tomato;
   height: 3rem;
   font-size: 1rem;
@@ -36,7 +36,7 @@ button {
   color: #FFFFFF;
   cursor: pointer;
   padding: 0 1rem;
-  width: 8rem;
+  width: 3rem;
 }
 
 .coin-input {
@@ -44,7 +44,7 @@ button {
 }
 
 .box {
-  width: 20rem;
+  width: 16rem;
   height: 25rem;
   border-radius: 0.5rem;
   border: 2px solid tomato;
@@ -111,8 +111,11 @@ button {
   cursor: pointer;
 }
 
-.login {
-  /*display: none;*/
+.header {
+  height: 3.5rem;
+  background-color: tomato;
+  /*text-align: center;*/
+  vertical-align: middle;
 }
 
 .hide {
@@ -122,4 +125,16 @@ button {
 .click {
   color: tomato;
   border-bottom: 0.125rem solid tomato;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #FFFFFF;
+}
+
+.tab {
+  color: #ffffff;
+  float: right;
+  padding: 1rem 2rem;
+  cursor: pointer;
 }

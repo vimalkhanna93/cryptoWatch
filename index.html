@@ -21,6 +21,8 @@
         <button id="submit-login" class="login-submit" @click="login()">Submit</button>
       </div>
       <div class="register" :class="{hide:enable}">
+        <input class="login-inputbox" id="username-register" type="text" placeholder="Username" v-model="registerUsername">
+        <br>
         <input class="login-inputbox" id="email-register" type="text" placeholder="Email" v-model="registerEmail">
         <br>
         <input class="login-inputbox" id="password-register" type="password" placeholder="Password" v-model="registerPassword">
@@ -37,6 +39,7 @@
           enable: true,
           loginEmail: '',
           loginPassword: '',
+          registerUsername: '',
           registerEmail: '',
           registerPassword: '',
           registerConfirmPassword: ''
@@ -46,8 +49,10 @@
             if(this.validateEmail() && this.validatePassword()) {
               if(this.confirmPassword()) {
                 var payload = {};
+                payload.username = this.registerUsername;
                 payload.email = this.registerEmail;
                 payload.password = this.registerPassword;
+                payload.coins = [];
                 this.$http.post('http://localhost:3000/register/',payload).then(res => {
                   console.log(res.body);
                 });
@@ -65,7 +70,10 @@
             payload.email = this.loginEmail;
             payload.password = this.loginPassword;
             this.$http.post('http://localhost:3000/login/',payload).then(res => {
-              console.log(res.body);
+              if(res.body == 'ok')
+                window.open('main.html',"_self");
+              else
+                console.log('invalid email or password');
             });
           },
           validateEmail: function() {

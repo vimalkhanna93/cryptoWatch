@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const request = require('request');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 var MongoClient = require('mongodb').MongoClient;
-
+var loginUser = "";
 MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
   if (err) throw err;
   db.createCollection("users");
@@ -16,11 +17,11 @@ MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) 
 app.post('/register', function (req,res) {
   var user = req.body;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection("users").findOne({"email" : user.email }, function(err, result) {
+    db.collection("users").findOne(user, function(err, result) {
       if(result == null) {
-        db.collection("users").insertOne(user, function(err, res) {
-          db.close();
-        });
+        db.collection("users").insertOne(user);
+        db.close();
+        res.send("user created");
       }
       else res.send("exist");
     });
@@ -30,8 +31,9 @@ app.post('/register', function (req,res) {
 app.post('/login', function(req,res) {
   var user = req.body;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection("users").findOne({"email": user.email }, function(err, result) {
-      if(req.body.password == result.password) {
+    db.collection("users").findOne(user, function(err, result) {
+      if(user.password == result.password) {
+        loginUser = user.email;
         res.send("ok");
       }
       else res.send("not");
@@ -40,19 +42,37 @@ app.post('/login', function(req,res) {
   });
 })
 
-app.get('/watch', function (req, res) {
-  var coinName = req.query.coin;
-  var RequestURL='https://api.coinmarketcap.com/v1/ticker/';
-  request(RequestURL, function (error, response, body) {
-    if (!error) {
-      var coinList = JSON.parse(body);
-      for(var i=0;i<coinList.length;i++) {
-        if(coinList[i].id == coinName) {
-          res.send(coinList[i]);
-        }
+app.get('/add', function (req, res) {
+  var coin = req.query.coin;
+  console.log(coin);
+  request('https://api.coinmarketcap.com/v1/ticker/', function (error, response, body) {
+    var list = JSON.parse(body);
+    for(var i=0;i<list.length;i++) {
+      if(list[i].id == coin) {
+        MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
+          db.collection("users").update({ email : loginUser},{$push: {coins:coin}});
+//           db.collection("users").update({ email : loginUser},{$set: {
+//        item: "ABC123",
+//        "info.publisher": "2222",
+//        tags: [ "software" ],
+//        "ratings.1": { by: "xyz", rating: 3 }
+//      }
+//    }
+// )
+          db.close();
+        });
+        res.send(list[i]);
       }
     }
   })
+});
+
+app.get('/remove', function (req, res) {
+  var coin = req.query.coin;
+  MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
+    db.collection(loginUser).remove(coin);
+    db.close();
+  });
 });
 
 app.listen(3000);
