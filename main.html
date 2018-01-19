@@ -49,25 +49,27 @@
       remove: function() {
         var url = "http://localhost:3000/remove" + '?' + 'coin=' + this.coinName;
         this.$http.get(url).then(res => {
-          // this.coins.pop(this.coinName);
+        });
+      },
+      populate: function() {
+        this.$http.get('http://localhost:3000/display').then(res => {
+          var coinList = res.body;
+          for(var i=0;i<coinList.length;i++) {
+            var coin = {};
+            coin.id = coinList[i].id;
+            coin.name = coinList[i].name;
+            coin.price = coinList[i].price_usd;
+            coin.rank = coinList[i].rank;
+            coin.change1h = coinList[i].percent_change_1h;
+            coin.change7d = coinList[i].percent_change_7d;
+            coin.change24h = coinList[i].percent_change_24h;
+            this.coins.push(coin);
+          }
         });
       }
     },
     mounted:function(){
-      this.$http.get('http://localhost:3000/display').then(res => {
-        var coinList = res.body;
-        for(var i=0;i<coinList.length;i++) {
-          var coin = {};
-          coin.id = coinList[i].id;
-          coin.name = coinList[i].name;
-          coin.price = coinList[i].price_usd;
-          coin.rank = coinList[i].rank;
-          coin.change1h = coinList[i].percent_change_1h;
-          coin.change7d = coinList[i].percent_change_7d;
-          coin.change24h = coinList[i].percent_change_24h;
-          this.coins.push(coin);
-        }
-      });
+      this.populate();
     },
   });
 </script>

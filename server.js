@@ -65,16 +65,14 @@ app.get('/display', function(req,res) {
 
 app.get('/add', function (req, res) {
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection("users").update({ email : user.email},{$addToSet: {coins:req.query.coin}});
+    db.collection("users").update({email:user.email},{$addToSet:{coins:req.query.coin}});
     db.close();
   });
-  request('http://localhost:3000/display');
 });
 
 app.get('/remove', function (req, res) {
-  var coin = req.query.coin;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
-    db.collection(loginUser).remove(coin);
+    db.collection("users").update({email:user.email},{$pull:{coins:req.query.coin}});
     db.close();
   });
 });
