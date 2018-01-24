@@ -6,24 +6,25 @@
     <span class="title">Crypto Watch</span>
     <span class="tabs">
       <span class="tab">Logout</span>
-      <span class="tab">Math</span>
-      <span class="tab">Cards</span>
+      <span class="tab" @click=console.log("Hello");>Math</span>
+      <span class="tab" @click=console.log("Hello");>Cards</span>
     </span>
   </div>
   <div id="coin-wrapper" class="coin-wrapper">
     <input class="coin-input" type="text" placeholder="Coin Name" v-model="coinName" @keydown.enter="add()">
     <button class="submit" @click="add()">+</button>
     <button class="submit" @click="remove()">-</button>
-    <ul id="coinList">
+    <ul class="coin-list" id="coinList">
       <li class="coin" v-for="coin in coins">
         <div class="box">
           <p class="name">{{coin.name}}</p>
           <hr>
-          <p class="value">${{coin.price}}</p>
+          <span class="value">${{coin.price}}</span>
+          <img id="incdec" class="incdec"/>
           <p class="label">price</p>
           <p class="value">#{{coin.rank}}</p>
           <p class="label">Rank by MarketCap</p>
-          <p class="value"> {{coin.change1h}}%</p>
+          <p class="value">{{coin.change1h}}%</p>
           <p class="label">Last 1 hour</p>
           <p class="value">{{coin.change24h}}%</p>
           <p class="label">Last 24 hours</p>
@@ -42,35 +43,45 @@
     },
     methods: {
       add: function() {
-        this.coinName = this.coinName.toLowerCase();
-        var url = "http://localhost:3000/add" + '?' + 'coin=' + this.coinName;
-        this.$http.get(url);
+        var url = "http://localhost:3000/add" + '?' + 'coin=' + this.coinName.toLowerCase();
+        this.$http.get(url).then(res => {
+          this.addCoin(res.body);
+          location.reload();
+        });
       },
       remove: function() {
-        var url = "http://localhost:3000/remove" + '?' + 'coin=' + this.coinName;
-        this.$http.get(url).then(res => {
-        });
+        var url = "http://localhost:3000/remove" + '?' + 'coin=' + this.coinName.toLowerCase();
+        this.$http.get(url);
+        location.reload();
       },
       populate: function() {
         this.$http.get('http://localhost:3000/display').then(res => {
           var coinList = res.body;
           for(var i=0;i<coinList.length;i++) {
-            var coin = {};
-            coin.id = coinList[i].id;
-            coin.name = coinList[i].name;
-            coin.price = coinList[i].price_usd;
-            coin.rank = coinList[i].rank;
-            coin.change1h = coinList[i].percent_change_1h;
-            coin.change7d = coinList[i].percent_change_7d;
-            coin.change24h = coinList[i].percent_change_24h;
-            this.coins.push(coin);
+            this.addCoin(coinList[i]);
           }
         });
+      },
+      addCoin: function(res) {
+        var coin = {};
+        coin.id = res.id;
+        coin.name = res.name;
+        coin.price = res.price_usd;
+        coin.rank = res.rank;
+        coin.change1h = res.percent_change_1h;
+        coin.change7d = res.percent_change_7d;
+        coin.change24h = res.percent_change_24h;
+        this.coins.push(coin);
       }
     },
-    mounted:function(){
+    mounted:function() {
       this.populate();
-    },
+      var vm = this;
+      setInterval(function() {
+        location.reload();
+      },30000)
+
+    }
   });
 </script>
 </html>

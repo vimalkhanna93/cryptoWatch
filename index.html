@@ -5,29 +5,30 @@
     <link rel="stylesheet" href="style.css">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   </head>
   <body>
     <div class="wrapper">
-      <h2>Crypto Watch</h2>
+      <p class="brand-name">Crypto Watch</p>
       <div class="menu">
         <a class="option" :class="{click:enable}" @click="makeSignInVisible()">Login</a>
         <a class="option" :class="{click:!enable}" @click="makeRegisterVisible()">Register</a>
       </div>
       <div class="login" :class="{hide:!enable}">
-        <input class="login-inputbox" id="email" type="text" placeholder="Email" v-model="loginEmail">
+        <input class="login-inputbox" id="email" type="text" placeholder="Email" v-model="loginEmail" :class="{invalid:invalidcheck}" @click="checkForRedBorder()">
         <br>
-        <input class="login-inputbox" id="password" type="password" placeholder="Password" v-model="loginPassword">
+        <input class="login-inputbox" id="password" type="password" placeholder="Password" v-model="loginPassword" :class="{invalid:invalidcheck}" @click="checkForRedBorder()">
         <br>
         <button id="submit-login" class="login-submit" @click="login()">Submit</button>
       </div>
       <div class="register" :class="{hide:enable}">
-        <input class="login-inputbox" id="username-register" type="text" placeholder="Username" v-model="registerUsername">
+        <input class="login-inputbox" id="username-register" type="text" placeholder="Username" v-model="registerUsername" :class="{valid:valid}">
         <br>
-        <input class="login-inputbox" id="email-register" type="text" placeholder="Email" v-model="registerEmail">
+        <input class="login-inputbox" id="email-register" type="text" placeholder="Email" v-model="registerEmail" :class="{valid:valid}">
         <br>
-        <input class="login-inputbox" id="password-register" type="password" placeholder="Password" v-model="registerPassword">
+        <input class="login-inputbox" id="password-register" type="password" placeholder="Password" v-model="registerPassword" :class="{valid:valid}">
         <br>
-        <input class="login-inputbox" id="password-confirmation-register" type="password" placeholder="Confirm Password" v-model="registerConfirmPassword">
+        <input class="login-inputbox" id="password-confirmation-register" type="password" placeholder="Confirm Password" v-model="registerConfirmPassword" :class="{valid:valid}">
         <br />
         <button class="login-submit" @click="register()">Submit</button>
       </div>
@@ -42,7 +43,9 @@
           registerUsername: '',
           registerEmail: '',
           registerPassword: '',
-          registerConfirmPassword: ''
+          registerConfirmPassword: '',
+          invalidcheck: false,
+          valid: false
         },
         methods: {
           register: function() {
@@ -54,7 +57,11 @@
                 payload.password = this.registerPassword;
                 payload.coins = [];
                 this.$http.post('http://localhost:3000/register/',payload).then(res => {
-                  console.log(res.body);
+                  this.valid = true;
+                  var vm = this;
+                  setTimeout(function() {
+                    vm.makeSignInVisible();
+                  }, 1000);
                 });
               }
               else {
@@ -71,9 +78,11 @@
             payload.password = this.loginPassword;
             this.$http.post('http://localhost:3000/login/',payload).then(res => {
               if(res.body == 'ok')
-                window.open('main.html',"_self");
-              else
-                console.log('invalid email or password');
+                window.open('card.html',"_self");
+              else {
+                // console.log("Invalid Email or Password");
+                this.invalidcheck = true;
+              }
             });
           },
           validateEmail: function() {
@@ -93,6 +102,13 @@
           },
           makeRegisterVisible: function() {
             this.enable = false;
+          },
+          checkForRedBorder: function() {
+            if(this.invalidcheck == true) {
+              this.loginEmail = "";
+              this.loginPassword = "";
+              this.invalidcheck = false;
+            }
           }
         }
       })

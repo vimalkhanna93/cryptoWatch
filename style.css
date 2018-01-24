@@ -1,3 +1,12 @@
+@media all and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
+  .tab {
+    padding-left: 5%;
+  }
+}
+
 body {
   font-family: 'Work Sans', sans-serif;
   color: #646E78;
@@ -13,8 +22,9 @@ hr {
 input {
   outline: none;
   box-shadow: none;
-  border: 0.125rem solid lightgrey;
-  width: 24rem;
+  width: 50%;
+  max-width: 24rem;
+  min-width: 12rem;
   height: 3rem;
   font-size: 1rem;
   color: #646E78;
@@ -37,6 +47,12 @@ button {
   cursor: pointer;
   padding: 0 1rem;
   width: 3rem;
+}
+
+.brand-name {
+  font-size: 2rem;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
 }
 
 .coin-input {
@@ -90,8 +106,15 @@ button {
 }
 
 .wrapper {
-  text-align: center;
   width: 25rem;
+  border: 0.125rem solid #F4F6F8;
+  padding: 1rem 0rem;
+  position: absolute;
+  margin: auto;
+  top: 25%;
+  right: 0;
+  left: 0;
+  text-align: center;
 }
 
 .menu {
@@ -104,8 +127,7 @@ button {
 .option {
   text-decoration: none;
   color: #96A2AE;
-  border-bottom: 0.125rem solid #F4F6F8;
-  padding-bottom: 0.625rem;
+  padding-bottom: 0.67rem;
   margin-left: 1rem;
   margin-right: 1rem;
   cursor: pointer;
@@ -114,7 +136,6 @@ button {
 .header {
   height: 3.5rem;
   background-color: tomato;
-  /*text-align: center;*/
   vertical-align: middle;
 }
 
@@ -128,13 +149,42 @@ button {
 }
 
 .title {
+  text-align: center;
   font-size: 1.5rem;
   color: #FFFFFF;
+  position: relative;
+  top: 0.9rem;
 }
 
 .tab {
   color: #ffffff;
   float: right;
-  padding: 1rem 2rem;
+  padding: 1.25rem 2.5rem;
   cursor: pointer;
+  padding-bottom: 1.1rem;
+}
+
+.tab:hover {
+  background-color: #FFFFFF;
+  color: tomato;
+}
+
+.coin-list {
+  overflow: hidden;
+  padding: 0rem;
+}
+
+.incdec {
+  position: relative;
+  top: 0.25rem;
+}
+
+.invalid {
+  border-color: red;
+  transition: 0.2s;
+}
+
+.valid {
+  border-color: #ADFF2F;
+  transition: 0.2s;
 }

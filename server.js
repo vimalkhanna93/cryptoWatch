@@ -7,6 +7,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 var MongoClient = require('mongodb').MongoClient;
 var user = {};
+var list = {};
+
 MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
   if (err) throw err;
   db.createCollection("users");
@@ -32,10 +34,12 @@ app.post('/login', function(req,res) {
   user = req.body;
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
     db.collection("users").findOne(user, function(err, result) {
-      if(user.password == result.password) {
+      if(result == null) {
+        res.send("no user found");
+      }
+      else if(user.password == result.password) {
         res.send("ok");
       }
-      else res.send("not");
       db.close();
     });
   });
@@ -43,7 +47,7 @@ app.post('/login', function(req,res) {
 
 app.get('/display', function(req,res) {
   var coins = [];
-  var coinDetails = [];
+  coinDetails = [];
   MongoClient.connect("mongodb://localhost:27017/user-details", function(err, db) {
     db.collection("users").findOne(user, function(err, result) {
       coins = result.coins;
@@ -54,6 +58,8 @@ app.get('/display', function(req,res) {
        for(var i=0;i<coins.length;i++) {
         for(var j=0;j<list.length;j++) {
           if(coins[i] == list[j].id) {
+            if(list[j].percent_change_1h > 0) list[j].color = "static/svg/up.svg";
+            else list[j].color = "static/svg/down.svg";
             coinDetails.push(list[j]);
           }
         }
@@ -75,6 +81,10 @@ app.get('/remove', function (req, res) {
     db.collection("users").update({email:user.email},{$pull:{coins:req.query.coin}});
     db.close();
   });
+});
+
+app.get('/math', function(req, res) {
+  res.send(coinDetails);
 });
 
 app.listen(3000);
